@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <img alt="logo lipidico" src="../assets/images.jpg">
+    <HelloWorld msg="Análisis de perfil lipidico"/>
   </div>
 </template>
 
