@@ -1,5 +1,11 @@
 <?php
+/* 
+TAKEN FORM: https://github.com/oscaruhp/empleados
+AUTHOR: Oscar Uh
 
+MODIFIED AND ADAPTED BY: Angelower Santana-Velásquez
+
+*/
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: access");
 header("Access-Control-Allow-Methods: GET,POST");
@@ -13,22 +19,21 @@ $usuario = "root";
 $passwd = ""; 
 $nombreBaseDatos = "perfillipidico";
 $conexionBD = new mysqli($servidor, $usuario, $passwd, $nombreBaseDatos);
-
 /* Consulta UN registro de paciente de la tabla patients teniendo como criterio de búsqueda 
    la variable 'id' que viene en el $_GET["consultar"] 
    */
-  if (isset($_GET["consultar"])) {
+if (isset($_GET["consultar"])) {
     $id = $_GET["consultar"];
 
     // Consulta a la tabla usuarios
-    $sqlPatient = mysqli_query($conexionBD, "SELECT * FROM usuarios WHERE `Documento Identidad`='$id'");
+    $sqlPatient = mysqli_query($conexionBD, "SELECT * FROM usuarios WHERE Documento_identidad='$id'");
     
     // Si se encuentra el paciente
     if (mysqli_num_rows($sqlPatient) > 0) {
         $patient = mysqli_fetch_assoc($sqlPatient);
 
         // Consulta a la tabla lipidico
-        $sqlLipidico = mysqli_query($conexionBD, "SELECT * FROM lipidico WHERE `Documento identidad`='$id'");
+        $sqlLipidico = mysqli_query($conexionBD, "SELECT * FROM lipidico WHERE Documento_identidad='$id'");
         
         // Si se encuentra el perfil lipídico
         if (mysqli_num_rows($sqlLipidico) > 0) {
@@ -52,31 +57,49 @@ $conexionBD = new mysqli($servidor, $usuario, $passwd, $nombreBaseDatos);
     exit();
 }
 
-
 /* Borra un registro de paciente de la tabla patients, teniendo como criterio de búsqueda 
    la variable 'id' que viene en el $_GET["borrar"] 
    */
 if (isset($_GET["borrar"])){
-        $sqlActivo = mysqli_query($conexionBD,"DELETE FROM usuarios WHERE id=".$_GET["borrar"]);
+        $sqlActivo = mysqli_query($conexionBD,"DELETE FROM usuarios WHERE Documento_identidad=".$_GET["borrar"]);
         if($sqlActivo){
             echo json_encode(["success"=>1]);
             exit();
         }
         else{  echo json_encode(["success"=>0]); }
 }
-/* Inserta un registro de paciente de la tabla patients. La información es recibida en método POST */
-if(isset($_GET["insertar"])){
-        $data = json_decode(file_get_contents("php://input"));
-		$id_=$data->id;
-        $doc=$data->doc;
-		$name=$data->name;
-        $lastname=$data->lastname; 
-            if(($doc!="")&&($name!="")&&($lastname!="")){        
-                $sqlPatient = mysqli_query($conexionBD,"INSERT INTO usuarios(doc,name,lastname) VALUES(null,'$doc','$name','$lastname') ");
-                echo json_encode(["success"=>1]);
-            }
-    exit();
+if (isset($_GET["detalles"])) {
+    // Consultar la tabla lipidico por Documento_identidad
+    $documento = mysqli_real_escape_string($conexionBD, $_GET["detalles"]);
+    $sqllipidos = mysqli_query($conexionBD, "SELECT * FROM lipidico WHERE Documento_identidad='" . $documento . "'");
+
+    // Verificar si hay resultados en lipidico
+    if (mysqli_num_rows($sqllipidos) > 0) {
+        $lipidos = mysqli_fetch_all($sqllipidos, MYSQLI_ASSOC);
+        echo json_encode($lipidos); // Solo devolver los resultados de lipidico
+    } else {
+        echo json_encode([["success" => 0, "message" => "No se encontraron datos en lipidico"]]);
+    }
+} elseif (isset($_GET["usuarios"])) {
+    // Consultar la tabla usuarios
+    $sqlPatients_ = mysqli_query($conexionBD, "SELECT * FROM usuarios");
+
+    // Verificar si hay resultados en usuarios
+    if (mysqli_num_rows($sqlPatients_) > 0) {
+        $patients_ = mysqli_fetch_all($sqlPatients_, MYSQLI_ASSOC);
+        echo json_encode($patients_); // Solo devolver los resultados de usuarios
+    } else {
+        echo json_encode([["success" => 0, "message" => "No se encontraron usuarios"]]);
+    }
+} else {
+    echo json_encode([["success" => 0, "message" => "No se proporcionaron parámetros"]]);
 }
+
+
+
+/* Inserta un registro de paciente de la tabla patients. La información es recibida en método POST */
+
+
 
 
 /* Actualiza todos los campos de la tabla patients, teniendo como criterio de búsqueda 
@@ -97,10 +120,3 @@ if(isset($_GET["actualizar"])){
 /*
 	Muestra todos los registros almacenados en la tabla patients, usando la URL raíz.
 */
-$sqlPatients_ = mysqli_query($conexionBD,"SELECT * FROM usuarios");
-if(mysqli_num_rows($sqlPatients_) > 0){
-    $patients_ = mysqli_fetch_all($sqlPatients_,MYSQLI_ASSOC);
-    echo json_encode($patients_);
-}
-else{ echo json_encode([["success"=>0]]); }
-?>
