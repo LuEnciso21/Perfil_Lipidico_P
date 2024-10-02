@@ -57,6 +57,56 @@ if (isset($_GET["consultar"])) {
     exit();
 }
 
+/* Inserta un registro de paciente en la tabla usuarios y en lipidico */
+if (isset($_GET["insertar"])) {
+    $data = json_decode(file_get_contents("php://input"));
+
+    // Verificar que los datos sean válidos
+    if ($data && isset($data->Documentoidentidad) && isset($data->Nombres) && isset($data->Apellidos) && 
+        isset($data->Edad) && isset($data->Genero) && isset($data->EPS) && 
+        isset($data->CHOLT) && isset($data->HDL) && isset($data->LDL) && isset($data->TRIG)) {
+
+        // Obtener datos
+        $doc = $conexionBD->real_escape_string($data->Documentoidentidad);
+        $name = $conexionBD->real_escape_string($data->Nombres);
+        $lastname = $conexionBD->real_escape_string($data->Apellidos);
+        $edad = $conexionBD->real_escape_string($data->Edad);
+        $genero = $conexionBD->real_escape_string($data->Genero);
+        $eps = $conexionBD->real_escape_string($data->EPS);
+        
+        // Nuevas variables para la tabla lipidico
+        $cholt = $conexionBD->real_escape_string($data->CHOLT);
+        $hdl = $conexionBD->real_escape_string($data->HDL);
+        $ldl = $conexionBD->real_escape_string($data->LDL);
+        $trig = $conexionBD->real_escape_string($data->TRIG);
+
+        // Consulta para insertar el nuevo paciente en la tabla usuarios
+        $sqlPatient = "INSERT INTO usuarios (`Documento identidad`, Nombres, Apellidos, Edad, Genero, EPS) 
+                       VALUES ('$doc', '$name', '$lastname', '$edad', '$genero', '$eps')";
+        
+        if (mysqli_query($conexionBD, $sqlPatient)) {
+            // Si la inserción en usuarios fue exitosa, obtener el ID del nuevo paciente
+            $patientId = $conexionBD->insert_id; // Obtiene el último ID insertado
+            
+            // Consulta para insertar en la tabla lipidico
+            $sqlLipidico = "INSERT INTO lipidico (`Documento identidad`, CHOLT, HDL, LDL, TRIG) 
+                            VALUES ('$doc', '$cholt', '$hdl', '$ldl', '$trig')";
+            
+            if (mysqli_query($conexionBD, $sqlLipidico)) {
+                echo json_encode(["success" => 1]);
+            } else {
+                echo json_encode(["success" => 0, "error" => mysqli_error($conexionBD)]);
+            }
+        } else {
+            echo json_encode(["success" => 0, "error" => mysqli_error($conexionBD)]);
+        }
+    } else {
+        echo json_encode(["success" => 0, "error" => "Datos incompletos"]);
+    }
+    exit();
+}
+
+
 /* Borra un registro de paciente de la tabla patients, teniendo como criterio de búsqueda 
    la variable 'id' que viene en el $_GET["borrar"] 
    */
