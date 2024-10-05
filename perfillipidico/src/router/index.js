@@ -1,8 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import listarView from '../views/listarView.vue'
+import especialistaView from '../views/especialistaView.vue'
 import crearView from '../views/crearView.vue'
-import editarView from '../views/editarView.vue'
+import detallesView from '../views/detallesView.vue'
+import buscarView from '../views/buscarView.vue'
+import actualizarView from '../views/actualizarView.vue'
+
 const routes = [
   {
     path: '/',
@@ -10,9 +13,9 @@ const routes = [
     component: HomeView
   },
   {
-    path: '/listar',
-    name: 'listar',
-    component: listarView
+    path: '/especialista',
+    name: 'especialista',
+    component: especialistaView
   },
   {
     path: '/crear',
@@ -20,11 +23,20 @@ const routes = [
     component: crearView
   },
   {
-    path: '/editar',
-    name: 'editar',
-    component: editarView
+    path: '/buscar',
+    name: 'buscar',
+    component: buscarView
   },
-  
+  {
+    path: '/detalles/:Documento',
+    name: 'detalles',
+    component: detallesView
+  },
+  {
+    path: '/actualizar/:Documento',
+    name: 'actualizar',
+    component: actualizarView
+  },
   {
     path: '/about',
     name: 'about',

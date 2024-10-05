@@ -1,14 +1,14 @@
 <template>
   <nav>
-    <router-link to="/listar">Lista de pacientes    </router-link>|
-    <router-link to="/crear">   crear paciente</router-link>|
-    <router-link to="/buscar">   Resultados </router-link>
+    <router-link to="/">Inicio</router-link>|
+    <router-link to="/especialista">Especialista</router-link>|
+    <router-link to="/crear">Crear</router-link>|
+    <router-link to="/buscar">Consultar</router-link>|
+
+
   </nav>
   <router-view/>
 </template>
-
-
-
 
 <style>
 #app {
