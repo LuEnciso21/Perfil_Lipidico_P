@@ -1,17 +1,51 @@
 <template>
-  <div class="home">
-    <img alt="logo lipidico" src="../assets/images.jpg">
-    <HelloWorld msg="LipiTech hace el trabajo duro por ti."/>
-  </div>
-</template>
-
-<script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-export default {
-  name: 'HomeView',
-  components: {
-    HelloWorld
+    <div>
+      <v-carousel
+        class="mt-5"  
+        height="600"
+        show-arrows="hover"
+        cycle
+        hide-delimiter-background
+      >
+        <v-carousel-item
+          v-for="(slide, i) in slides"
+          :key="i"
+        >
+          <v-sheet
+            :color="colors[i]"
+            height="100%"
+          >
+            <div class="d-flex fill-height justify-center align-center">
+              <div class="text-h2">
+                {{ slide }} Slide
+              </div>
+            </div>
+          </v-sheet>
+        </v-carousel-item>
+      </v-carousel>
+    </div>
+  </template>
+  
+  <script>
+  export default {
+    data () {
+      return {
+        colors: [
+          'indigo',
+          'warning',
+          'pink darken-2',
+          'red lighten-1',
+          'deep-purple accent-4',
+        ],
+        slides: [
+          'First',
+          'Second',
+          'Third',
+          'Fourth',
+          'Fifth',
+        ],
+      }
+    },
   }
-}
-</script>
+  </script>
+  

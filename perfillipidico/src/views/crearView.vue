@@ -1,200 +1,252 @@
 <template>
-  <!-- Contenedor principal del formulario para crear pacientes -->
-  <div class="container mt-5">
-    <!-- Tarjeta con sombra que contiene el formulario -->
-    <div class="card shadow">
-      <!-- Encabezado de la tarjeta -->
-      <div class="card-header text-center bg-primary text-white">
-        <h4>Página para crear pacientes</h4> <!-- Título del formulario -->
-      </div>
-      <!-- Cuerpo de la tarjeta que contiene el formulario -->
-      <div class="card-body">
-        <!-- El formulario dispara el método 'agregarPaciente' cuando se envía -->
-        <form @submit.prevent="agregarPaciente">
-          <!-- Campo para Documento identidad, enlazado al modelo 'paciente.Documentoidentidad' -->
-          <div class="input-group mb-3">
-            <span class="input-group-text">Documento identidad</span>
-            <input v-model="paciente.Documentoidentidad" required type="text" class="form-control">
-          </div>
-          <!-- Campo para Nombres -->
-          <div class="input-group mb-3">
-            <span class="input-group-text">Nombres</span>
-            <input v-model="paciente.Nombres" type="text" class="form-control" required>
-          </div>
-          <!-- Campo para Apellidos -->
-          <div class="input-group mb-3">
-            <span class="input-group-text">Apellidos</span>
-            <input v-model="paciente.Apellidos" type="text" class="form-control" required>
-          </div>
-          <!-- Campo para Edad -->
-          <div class="input-group mb-3">
-            <span class="input-group-text">Edad</span>
-            <input v-model="paciente.edad" type="number" class="form-control" required>
-          </div>
-          <!-- Campo para Género con opciones predefinidas -->
-          <div class="input-group mb-3">
-            <span class="input-group-text">Género</span>
-            <select v-model="paciente.genero" class="form-select" required>
-              <option value="" disabled>Seleccione Género</option>
-              <option value="Masculino">Masculino</option>
-              <option value="Femenino">Femenino</option>
-              <option value="Otro">Otro</option>
-            </select>
-          </div>
-          <!-- Campo para EPS con opciones predefinidas -->
-          <div class="input-group mb-3">
-            <span class="input-group-text">EPS</span>
-            <select v-model="paciente.eps" class="form-select" required>
-              <option value="" disabled>Seleccione EPS</option>
-              <option value="SURA">SURA</option>
-              <option value="Sanitas">Sanitas</option>
-              <option value="Compensar">Compensar</option>
-              <option value="Nueva EPS">Nueva EPS</option>
-            </select>
-          </div>
-          <!-- Campos nuevos para el perfil lipídico -->
-          <!-- Campo para CHOLT (colesterol total) -->
-          <div class="input-group mb-3">
-            <span class="input-group-text">CHOLT</span>
-            <input v-model="paciente.CHOLT" type="number" class="form-control" required>
-          </div>
-          <!-- Campo para HDL -->
-          <div class="input-group mb-3">
-            <span class="input-group-text">HDL</span>
-            <input v-model="paciente.HDL" type="number" class="form-control" required>
-          </div>
-          <!-- Campo para LDL -->
-          <div class="input-group mb-3">
-            <span class="input-group-text">LDL</span>
-            <input v-model="paciente.LDL" type="number" class="form-control" required>
-          </div>
-          <!-- Campo para TRIG (triglicéridos) -->
-          <div class="input-group mb-3">
-            <span class="input-group-text">TRIG</span>
-            <input v-model="paciente.TRIG" type="number" class="form-control" required>
-          </div>
-          <!-- Botones de acción: guardar o cancelar -->
-          <div class="btn-group" role="group">
-            <button type="submit" class="btn btn-success mx-2">Guardar</button> <!-- Botón para guardar -->
-            <router-link :to="{ name: 'home' }" class="btn btn-danger mx-2">Cancelar</router-link> <!-- Botón para cancelar que redirige a 'home' -->
-          </div>
-        </form>
-        <!-- Mensaje de éxito mostrado si 'mensaje' tiene valor -->
-        <div v-if="mensaje" class="alert alert-success mt-3">
-          {{ mensaje }} <!-- Mensaje dinámico de éxito o error -->
+    <div class="container mt-5">
+      <div class="card shadow form-container">
+        <div class="card-header text-center bg-primary text-white">
+          <h4>Página para crear pacientes</h4>
+        </div>
+        <div class="card-body">
+          <!-- Mensaje de éxito -->
+          <v-fade-transition hide-on-leave>
+            <v-card
+              v-if="dialog"
+              append-icon="$close"
+              class="mx-auto success-dialog"
+              elevation="10"
+              max-width="500"
+              title="Ingreso Paciente"
+            >
+              <template v-slot:append>
+                <v-btn icon="$close" variant="text" @click="dialog = false"></v-btn>
+              </template>
+  
+              <v-divider></v-divider>
+  
+              <div class="py-12 text-center">
+                <v-icon
+                  class="mb-6"
+                  color="success"
+                  icon="mdi-check-circle-outline"
+                  size="128"
+                ></v-icon>
+  
+                <div class="text-h4 font-weight-bold">Paciente guardado exitosamente</div>
+              </div>
+  
+              <v-divider></v-divider>
+  
+              <div class="pa-4 text-end">
+                <v-btn
+                  class="text-none"
+                  color="medium-emphasis"
+                  min-width="92"
+                  variant="outlined"
+                  rounded
+                  @click="dialog = false"
+                >
+                  Close
+                </v-btn>
+              </div>
+            </v-card>
+          </v-fade-transition>
+  
+          <form @submit.prevent="agregarPaciente">
+            <!-- Documento identidad -->
+            <v-text-field
+              v-model="paciente.Documentoidentidad"
+              label="Documento identidad"
+              required
+            ></v-text-field>
+  
+            <!-- Nombres -->
+            <v-text-field
+              v-model="paciente.Nombres"
+              label="Nombres"
+              required
+            ></v-text-field>
+  
+            <!-- Apellidos -->
+            <v-text-field
+              v-model="paciente.Apellidos"
+              label="Apellidos"
+              required
+            ></v-text-field>
+  
+            <!-- Edad -->
+            <v-text-field
+              v-model="paciente.edad"
+              label="Edad"
+              type="number"
+              required
+            ></v-text-field>
+  
+            <!-- Género -->
+            <v-select
+              v-model="paciente.genero"
+              :items="generoItems"
+              label="Género"
+              required
+            ></v-select>
+  
+            <!-- EPS -->
+            <v-select
+              v-model="paciente.eps"
+              :items="epsItems"
+              label="EPS"
+              required
+            ></v-select>
+  
+            <!-- CHOLT -->
+            <v-text-field
+              v-model="paciente.CHOLT"
+              label="CHOLT"
+              type="number"
+              required
+            ></v-text-field>
+  
+            <!-- HDL -->
+            <v-text-field
+              v-model="paciente.HDL"
+              label="HDL"
+              type="number"
+              required
+            ></v-text-field>
+  
+            <!-- LDL -->
+            <v-text-field
+              v-model="paciente.LDL"
+              label="LDL"
+              type="number"
+              required
+            ></v-text-field>
+  
+            <!-- TRIG -->
+            <v-text-field
+              v-model="paciente.TRIG"
+              label="TRIG"
+              type="number"
+              required
+            ></v-text-field>
+  
+            <!-- Botones -->
+            <div class="btn-group" role="group">
+              <v-btn color="blue lighten-1" variant="tonal" class="mx-2" type="submit">Guardar</v-btn>
+              <router-link :to="{ name: 'home' }">
+                <v-btn color="red lighten-1" variant="tonal" class="mx-2">Cancelar</v-btn>
+              </router-link>
+            </div>
+          </form>
+        </div>
+        <div class="card-footer text-muted text-center">
+          BioSoft Technologies
         </div>
       </div>
-      <!-- Pie de la tarjeta con un texto centrado -->
-      <div class="card-footer text-muted text-center">
-        Practica1 Ingeniería de Software
-      </div>
     </div>
-  </div>
-</template>
-
-<script>
-export default {
-  // Estado del componente
-  data() {
-    return {
-      paciente: {
-        Documentoidentidad: '', // Inicializa el documento vacío
-        Nombres: '', // Inicializa el campo nombres vacío
-        Apellidos: '', // Inicializa el campo apellidos vacío
-        edad: '', // Inicializa la edad vacía
-        genero: '', // Inicializa el género vacío
-        eps: '', // Inicializa la EPS vacía
-        CHOLT: '', // Inicializa el colesterol total vacío
-        HDL: '', // Inicializa HDL vacío
-        LDL: '', // Inicializa LDL vacío
-        TRIG: '' // Inicializa triglicéridos vacíos
+  </template>
+  
+  <script setup>
+  import { ref } from 'vue'
+  
+  // Estado inicial del paciente y mensaje
+  const paciente = ref({
+    Documentoidentidad: '',
+    Nombres: '',
+    Apellidos: '',
+    edad: '',
+    genero: '',
+    eps: '',
+    CHOLT: '',
+    HDL: '',
+    LDL: '',
+    TRIG: ''
+  })
+  
+  const mensaje = ref('')
+  const dialog = ref(false) // Cambiado a false por defecto
+  
+  // Opciones para los select
+  const generoItems = ['Masculino', 'Femenino', 'Otro']
+  const epsItems = ['SURA', 'Sanitas', 'Compensar', 'Nueva EPS']
+  
+  // Método para agregar el paciente a la API
+  const agregarPaciente = () => {
+    const datosPaciente = {
+      Documentoidentidad: paciente.value.Documentoidentidad,
+      Nombres: paciente.value.Nombres,
+      Apellidos: paciente.value.Apellidos,
+      Edad: paciente.value.edad,
+      Genero: paciente.value.genero,
+      EPS: paciente.value.eps,
+      CHOLT: paciente.value.CHOLT,
+      HDL: paciente.value.HDL,
+      LDL: paciente.value.LDL,
+      TRIG: paciente.value.TRIG
+    }
+  
+    fetch('http://localhost/api/?insertar=1', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
       },
-      mensaje: '' // Inicializa el mensaje vacío para mostrar resultados
-    };
-  },
-  methods: {
-    // Método para agregar un nuevo paciente
-    agregarPaciente() {
-      // Crear un objeto con los datos del paciente a enviar
-      const datosPaciente = {
-        Documentoidentidad: this.paciente.Documentoidentidad,
-        Nombres: this.paciente.Nombres,
-        Apellidos: this.paciente.Apellidos,
-        Edad: this.paciente.edad,
-        Genero: this.paciente.genero,
-        EPS: this.paciente.eps,
-        CHOLT: this.paciente.CHOLT,
-        HDL: this.paciente.HDL,
-        LDL: this.paciente.LDL,
-        TRIG: this.paciente.TRIG
-      };
-
-      // Realizar la solicitud POST al servidor para insertar el paciente
-      fetch('http://localhost/api/?insertar=1', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json' // Define el tipo de contenido como JSON
-        },
-        body: JSON.stringify(datosPaciente) // Convierte el objeto a una cadena JSON
-      })
-      .then(response => response.json()) // Parsear la respuesta JSON
+      body: JSON.stringify(datosPaciente)
+    })
+      .then(response => response.json())
       .then(data => {
-        if (data.success) { // Si la respuesta indica éxito
-          this.mensaje = 'Paciente guardado exitosamente'; // Muestra mensaje de éxito
-          this.resetForm(); // Resetea el formulario
+        if (data.success) {
+          mensaje.value = 'Paciente guardado exitosamente'
+          dialog.value = true // Abrir el diálogo
+          resetForm()
         } else {
-          this.mensaje = 'Error al guardar el paciente'; // Muestra mensaje de error
+          mensaje.value = 'Error al guardar el paciente'
         }
       })
-      .catch(error => { // Si hay un error en la solicitud
-        console.error('Error:', error);
-        this.mensaje = 'Error en la conexión'; // Muestra mensaje de error de conexión
-      });
-    },
-    // Método para reiniciar el formulario después de guardar
-    resetForm() {
-      this.paciente = { // Restablece los campos del paciente a valores vacíos
-        Documentoidentidad: '',
-        Nombres: '',
-        Apellidos: '',
-        edad: '',
-        genero: '',
-        eps: '',
-        CHOLT: '',
-        HDL: '',
-        LDL: '',
-        TRIG: ''
-      };
+      .catch(error => {
+        console.error('Error:', error)
+        mensaje.value = 'Error en la conexión'
+      })
+  }
+  
+  // Método para reiniciar el formulario
+  const resetForm = () => {
+    paciente.value = {
+      Documentoidentidad: '',
+      Nombres: '',
+      Apellidos: '',
+      edad: '',
+      genero: '',
+      eps: '',
+      CHOLT: '',
+      HDL: '',
+      LDL: '',
+      TRIG: ''
     }
   }
-};
-</script>
-
-<style scoped>
-/* Estilos para las tarjetas */
-.card {
-  border-radius: 15px; /* Bordes redondeados */
-}
-
-/* Estilos para los textos de los input groups */
-.input-group-text {
-  background-color: #007bff; /* Color de fondo azul */
-  color: white; /* Texto blanco */
-}
-
-/* Estilos para los botones */
-.btn {
-  padding: 10px 15px; /* Relleno en los botones */
-  font-size: 14px; /* Tamaño de fuente */
-}
-
-/* Estilos para el pie de página */
-.text-muted {
-  font-size: 14px; /* Tamaño de fuente reducido */
-}
-
-/* Estilos para los mensajes de alerta */
-.alert {
-  font-size: 14px; /* Tamaño de fuente reducido */
-}
-</style>
+  </script>
+  
+  <style scoped>
+  /* Ajustes de estilo */
+  .form-container {
+    max-width: 600px; /* Esto limita el ancho del formulario */
+    margin: 0 auto; /* Centra el formulario horizontalmente */
+  }
+  
+  .card {
+    border-radius: 15px;
+  }
+  
+  .success-dialog {
+    margin-top: 20px; 
+  }
+  
+  .btn {
+    padding: 10px 15px;
+  }
+  
+  .text-muted {
+    font-size: 14px;
+  }
+  
+  .alert {
+    font-size: 14px;
+  }
+  </style>
+  

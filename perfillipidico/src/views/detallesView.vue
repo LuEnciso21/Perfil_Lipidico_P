@@ -1,115 +1,101 @@
 <template>
-    <div class="container mt-5">
-        <!-- Tarjeta principal que contiene la tabla de detalles del paciente -->
-        <div class="card shadow">
-            <!-- Encabezado de la tarjeta con un estilo de fondo azul -->
-            <div class="card-header text-center bg-primary text-white">
-                <h4>Detalles del Paciente</h4>
-            </div>
-            
-            <!-- Cuerpo de la tarjeta -->
-            <div class="card-body">
-                <!-- Tabla que muestra los detalles del perfil lipídico del paciente -->
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <tr>
-                            <th>Documento</th>
-                            <th>CHOLT</th>
-                            <th>HDL</th>
-                            <th>LDL</th>
-                            <th>TRIG</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <!-- Mostrando los datos del paciente obtenidos -->
-                            <td>{{ paciente.Documento_identidad }}</td>
-                            <td>{{ paciente.CHOLT }}</td>
-                            <td>{{ paciente.HDL }}</td>
-                            <td>{{ paciente.LDL }}</td>
-                            <td>{{ paciente.TRIG }}</td>
-                        </tr>
-                    </tbody>
-                </table>
+    <v-app>
+        <v-container>
+            <div class="container mt-5">
+                <v-card flat>
+                    <div class="card-header text-center bg-primary text-white">
+                        <h4>Detalles del Paciente</h4>
+                    </div>
 
-                <!-- Botón para regresar a la vista anterior -->
-                <div class="text-center mt-4">
-                    <RouterLink :to="{ name: 'especialista' }" class="btn btn-success">
-                        Volver
-                    </RouterLink>
-                </div>
-            </div>
+                    <div class="card-body">
+                        <v-text-field
+                            v-model="search"
+                            label="Buscar"
+                            prepend-inner-icon="mdi-magnify"
+                            variant="outlined"
+                            hide-details
+                            single-line
+                        ></v-text-field>
 
-            <!-- Pie de la tarjeta con un mensaje de crédito -->
-            <div class="card-footer text-muted text-center">
-                Practica1 Ingeniería de Software
+                        <v-data-table
+                            :headers="headers"
+                            :items="pacientes"
+                            :search="search"
+                            class="elevation-1"
+                        >
+                            <template v-slot:header="{ props }">
+                                <tr>
+                                    <th
+                                        v-for="header in props.headers"
+                                        :key="header.key"
+                                        class="text-center"
+                                    >
+                                        {{ header.title }}
+                                    </th>
+                                </tr>
+                            </template>
+
+                            <template v-slot:item="{ item }">
+                                <tr>
+                                    <td class="text-center">{{ item.Documento_identidad }}</td>
+                                    <td class="text-center">{{ item.CHOLT }}</td>
+                                    <td class="text-center">{{ item.HDL }}</td>
+                                    <td class="text-center">{{ item.LDL }}</td>
+                                    <td class="text-center">{{ item.TRIG }}</td>
+                                </tr>
+                            </template>
+                        </v-data-table>
+
+                        <div class="text-center mt-4">
+                            <RouterLink :to="{ name: 'especialista' }">
+                                <v-btn color="deep-purple lighten-5" variant="tonal">
+                                    Volver
+                                </v-btn>
+                            </RouterLink>
+                        </div>
+                    </div>
+
+                    <div class="text-muted text-center mt-3">
+                        BioSoft Technologies
+                    </div>
+                </v-card>
             </div>
-        </div>
-    </div>
+        </v-container>
+    </v-app>
 </template>
 
 <script>
 export default {
     data() {
         return {
-            paciente: {} // Objeto que almacena los datos del paciente
+            search: '',
+            headers: [
+                { key: 'Documento_identidad', title: 'Documento identidad' },
+                { key: 'CHOLT', title: 'CHOLT' },
+                { key: 'HDL', title: 'HDL' },
+                { key: 'LDL', title: 'LDL' },
+                { key: 'TRIG', title: 'TRIG' },
+            ],
+            pacientes: [], // Almacena los datos del paciente
         };
     },
-    // Hook del ciclo de vida de Vue para cargar los datos cuando el componente es creado
-    created: function() {
-        this.obtenerPaciente(); // Llamada al método para obtener los detalles del paciente
+    created() {
+        this.obtenerPaciente(); // Llama al método para obtener los detalles del paciente
     },
     methods: {
-        // Método que realiza la solicitud a la API para obtener los detalles del paciente
         obtenerPaciente() {
             fetch('http://localhost/api/?detalles=' + this.$route.params.Documento) // Obtiene el documento del parámetro de la ruta
                 .then(response => response.json()) // Convierte la respuesta en formato JSON
                 .then((data) => {
                     console.log(data); // Imprime los datos en la consola para verificar
-
-                    // Verifica si el objeto obtenido contiene los datos esperados
-                    if (data[0]?.Documento_identidad) {
-                        this.paciente = data[0]; // Asigna los datos del paciente al objeto 'paciente'
+                    if (data.length) {
+                        this.pacientes = data; // Asigna los datos obtenidos al array 'pacientes'
                     } else {
-                        this.paciente = {}; // En caso de error, reinicia el objeto 'paciente'
+                        this.pacientes = []; // En caso de error, reinicia el array 'pacientes'
                     }
                 })
                 .catch(console.log); // Captura cualquier error y lo imprime en la consola
-        }
-    }
-}
+        },
+    },
+};
 </script>
-
-<style scoped>
-/* Estilo para redondear las esquinas de la tarjeta */
-.card {
-    border-radius: 15px;
-}
-
-/* Estilo para el encabezado de la tabla con fondo azul */
-.table th {
-    background-color: #007bff;
-    color: white;
-}
-
-/* Estilo para alternar el color de las filas de la tabla */
-.table-striped tbody tr:nth-of-type(odd) {
-    background-color: #f9f9f9;
-}
-
-/* Estilo para resaltar la fila al pasar el cursor por encima */
-.table-striped tbody tr:hover {
-    background-color: #e9ecef;
-}
-
-/* Estilo del botón de 'Volver' */
-.btn {
-    padding: 10px 20px;
-    font-size: 16px;
-}
-
-/* Estilo para el texto en el pie de la tarjeta */
-.text-muted {
-    font-size: 14px;
-}
-</style>
