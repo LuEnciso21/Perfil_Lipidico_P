@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 27-09-2024 a las 19:26:20
--- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Servidor: localhost:3306
+-- Tiempo de generación: 07-10-2024 a las 07:37:37
+-- Versión del servidor: 10.4.25-MariaDB
+-- Versión de PHP: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,20 +28,21 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `lipidico` (
-  `Documento identidad` varchar(10) NOT NULL,
+  `Documento_identidad` varchar(10) NOT NULL,
   `CHOLT` float NOT NULL,
   `HDL` float NOT NULL,
   `LDL` float NOT NULL,
   `TRIG` float NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `lipidico`
 --
 
-INSERT INTO `lipidico` (`Documento identidad`, `CHOLT`, `HDL`, `LDL`, `TRIG`) VALUES
-('1012345678', 210, 50, 120, 160),
-('1012345679', 190, 60, 100, 140);
+INSERT INTO `lipidico` (`Documento_identidad`, `CHOLT`, `HDL`, `LDL`, `TRIG`) VALUES
+('1002480112', 145, 140, 140, 140),
+('1012345678', 140, 34, 180, 78),
+('1012345679', 190, 60, 100, 180);
 
 -- --------------------------------------------------------
 
@@ -51,21 +52,22 @@ INSERT INTO `lipidico` (`Documento identidad`, `CHOLT`, `HDL`, `LDL`, `TRIG`) VA
 
 CREATE TABLE `usuarios` (
   `Consecutivo` int(11) NOT NULL,
-  `Documento identidad` varchar(10) NOT NULL,
+  `Documento_identidad` varchar(10) NOT NULL,
   `Nombres` text NOT NULL,
   `Apellidos` text NOT NULL,
   `Edad` int(11) NOT NULL,
   `Genero` text NOT NULL,
   `EPS` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`Consecutivo`, `Documento identidad`, `Nombres`, `Apellidos`, `Edad`, `Genero`, `EPS`) VALUES
-(1, '1012345678', 'CARLOS ', 'RAMIREZ TORRES', 45, 'MASCULINO', 'SANITAS'),
-(2, '1012345679', 'LAURA', 'GOMEZ SANCHEZ', 30, 'FEMENINO', 'NUEVA EPS');
+INSERT INTO `usuarios` (`Consecutivo`, `Documento_identidad`, `Nombres`, `Apellidos`, `Edad`, `Genero`, `EPS`) VALUES
+(1, '1012345678', 'CARLOS JULIAN', 'RAMIREZ TORRES', 45, 'Masculino', 'SURA'),
+(2, '1012345679', 'LAURA', 'GOMEZ SANCHEZ', 30, 'FEMENINO', 'NUEVA EPS'),
+(4, '1002480112', 'lU', 'D', 21, 'Femenino', 'Sanitas');
 
 --
 -- Índices para tablas volcadas
@@ -75,14 +77,14 @@ INSERT INTO `usuarios` (`Consecutivo`, `Documento identidad`, `Nombres`, `Apelli
 -- Indices de la tabla `lipidico`
 --
 ALTER TABLE `lipidico`
-  ADD PRIMARY KEY (`Documento identidad`);
+  ADD PRIMARY KEY (`Documento_identidad`);
 
 --
 -- Indices de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`Consecutivo`),
-  ADD UNIQUE KEY `Documento` (`Documento identidad`);
+  ADD UNIQUE KEY `Documento` (`Documento_identidad`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -92,7 +94,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `Consecutivo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `Consecutivo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
