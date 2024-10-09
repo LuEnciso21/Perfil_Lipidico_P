@@ -5,7 +5,7 @@
       :height="100" 
       aspect-ratio="10" 
       cover
-      src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"
+      src="https://i.pinimg.com/564x/60/72/a5/6072a5d3397dd6ae6b2c70ebdf689e27.jpg"
       class="mr-2" 
     ></v-img>
     <v-row justify="center" no-gutters>

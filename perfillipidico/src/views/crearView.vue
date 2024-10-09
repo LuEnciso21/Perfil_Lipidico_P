@@ -98,7 +98,7 @@
             <!-- CHOLT -->
             <v-text-field
               v-model="paciente.CHOLT"
-              label="CHOLT"
+              label="CHOLT (mg/dL)"
               type="number"
               required
             ></v-text-field>
@@ -106,7 +106,7 @@
             <!-- HDL -->
             <v-text-field
               v-model="paciente.HDL"
-              label="HDL"
+              label="HDL (mg/dL)"
               type="number"
               required
             ></v-text-field>
@@ -114,7 +114,7 @@
             <!-- LDL -->
             <v-text-field
               v-model="paciente.LDL"
-              label="LDL"
+              label="LDL (mg/dL)"
               type="number"
               required
             ></v-text-field>
@@ -122,7 +122,7 @@
             <!-- TRIG -->
             <v-text-field
               v-model="paciente.TRIG"
-              label="TRIG"
+              label="TRIG (mg/dL)"
               type="number"
               required
             ></v-text-field>

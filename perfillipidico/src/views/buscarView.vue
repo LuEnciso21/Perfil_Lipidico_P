@@ -12,6 +12,9 @@
         ></v-text-field>
       </div>
       <v-btn color="blue lighten-1" variant="tonal" @click="buscarPaciente">Buscar</v-btn>
+      <div class="card-footer text-muted text-center">
+        BioSoft Technologies
+      </div>
   
       <!-- Diálogo para mostrar paciente no encontrado -->
       <v-dialog v-model="dialog" max-width="500px">

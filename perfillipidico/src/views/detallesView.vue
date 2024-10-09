@@ -71,10 +71,10 @@ export default {
             search: '',
             headers: [
                 { key: 'Documento_identidad', title: 'Documento identidad' },
-                { key: 'CHOLT', title: 'CHOLT' },
-                { key: 'HDL', title: 'HDL' },
-                { key: 'LDL', title: 'LDL' },
-                { key: 'TRIG', title: 'TRIG' },
+                { key: 'CHOLT', title: 'CHOLT (mg/dL)' },
+                { key: 'HDL', title: 'HDL (mg/dL)' },
+                { key: 'LDL', title: 'LDL (mg/dL)' },
+                { key: 'TRIG', title: 'TRIG (mg/dL)' },
             ],
             pacientes: [], // Almacena los datos del paciente
         };
