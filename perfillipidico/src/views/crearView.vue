@@ -43,7 +43,7 @@
                   rounded
                   @click="dialog = false"
                 >
-                  Close
+                  Cerrar
                 </v-btn>
               </div>
             </v-card>
