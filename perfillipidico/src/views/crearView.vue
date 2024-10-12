@@ -54,6 +54,7 @@
             <v-text-field
               v-model="paciente.Documentoidentidad"
               label="Documento identidad"
+              type="number"
               required
             ></v-text-field>
   
