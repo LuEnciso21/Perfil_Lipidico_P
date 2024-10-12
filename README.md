@@ -34,7 +34,7 @@ Para configurar el proyecto localmente, sigue estos pasos:
 
 1. Clona el repositorio:
    ```bash
-   git clone https://github.com/[usuario]/[nombre-del-proyecto].git
+   git clone https://github.com/LuEnciso21/Perfil_Lipidico_P.git
 2. Instalación de dependencias del proyecto:
    ```bash
    npm install
@@ -42,8 +42,40 @@ Para configurar el proyecto localmente, sigue estos pasos:
     ```bash
    npm install vuetify
 
-5. Iniciar el servidor de desarrollo:
+4. Iniciar el servidor de desarrollo:
+    ```bash
+   npm run dev
 
-  ```bash
-  npm run dev
+
+---
+
+## **Ingreso al módulo especialista**
+Usuario: angelower.santana
+Contraseña: 123
+
+---
+
+## **Base de datos**
+Para configurar la base de datos, sigue estos pasos:
+
+1. Descarga el archivo `perfillipidico.sql`.
+2. Abre **phpMyAdmin** en tu servidor local.
+3. Crea una nueva base de datos (por ejemplo, `perfillipidico`).
+4. Selecciona la base de datos recién creada.
+5. Haz clic en la pestaña **Importar**.
+6. Selecciona el archivo `perfillipidico.sql` desde tu computadora y haz clic en **Continuar** para importar la estructura y datos de la base de datos.
+
+---
+
+## **API**
+Para configurar la API, realiza lo siguiente:
+
+1. Navega a la carpeta de instalación de **XAMPP** en tu disco C (generalmente `C:\xampp`).
+2. Localiza la carpeta `htdocs`.
+3. Crea una nueva carpeta dentro de `htdocs` llamada `api`.
+4. Copia el archivo `index.php` y pégalo dentro de la carpeta `api`.
+5. Asegúrate de que el servidor de Apache esté en funcionamiento desde el panel de control de XAMPP.
+
+
+
 
