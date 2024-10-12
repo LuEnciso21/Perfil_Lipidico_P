@@ -130,7 +130,7 @@
             <!-- Botones -->
             <div class="btn-group" role="group">
               <v-btn color="blue lighten-1" variant="tonal" class="mx-2" type="submit">Guardar</v-btn>
-              <router-link :to="{ name: 'home' }">
+              <router-link :to="{ name: 'especialista' }">
                 <v-btn color="red lighten-1" variant="tonal" class="mx-2">Cancelar</v-btn>
               </router-link>
             </div>

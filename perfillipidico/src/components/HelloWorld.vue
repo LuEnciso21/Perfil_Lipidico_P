@@ -29,8 +29,7 @@ export default {
     links: [
       { name: 'Inicio', path: '/' },
       { name: 'Nosotros', path: '/nosotros' }, 
-      { name: 'Especialista', path: '/especialista' },
-      { name: 'Ingresar paciente', path: '/crear' },
+      { name: 'Especialista', path: '/Login' },
       { name: 'Consultar resultados', path: '/buscar' },
     ],
   }),

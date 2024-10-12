@@ -5,7 +5,7 @@ import CrearView from '../views/crearView.vue';
 import DetallesView from '../views/detallesView.vue';
 import BuscarView from '../views/buscarView.vue';
 import ActualizarView from '../views/actualizarView.vue';
-
+import LoginView from '../views/LoginView.vue'; // Corrige el nombre aquí
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -17,6 +17,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/especialista',
     name: 'especialista',
     component: EspecialistaView,
+  },
+  {
+    path: '/Login',
+    name: 'Login',
+    component: LoginView, // Corrige el nombre aquí
   },
   {
     path: '/crear',
@@ -51,4 +56,3 @@ const router = createRouter({
 });
 
 export default router;
-

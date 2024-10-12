@@ -23,12 +23,12 @@
             <div class="py-12 text-center">
               <v-icon
                 class="mb-6"
-                color="success" 
+                color="success"
                 icon="mdi-check-circle-outline"
                 size="128"
               ></v-icon>
 
-              <div class="text-h4 font-weight-bold">Actualizado exitosamente</div> <!-- Texto fijo -->
+              <div class="text-h4 font-weight-bold">Actualizado exitosamente</div>
             </div>
 
             <v-divider></v-divider>
@@ -54,7 +54,22 @@
             label="Documento identidad"
             required
             readonly
-          ></v-text-field>
+          >
+            <template v-slot:append>
+              <v-tooltip bottom>
+                <template v-slot:activator="{ props }">
+                  <v-icon
+                    v-bind="props"
+                    class="ml-1"
+                    color="grey"
+                  >
+                    mdi-information-outline
+                  </v-icon>
+                </template>
+                <span>Este campo es solo de lectura. Para modificarlo, borre el paciente y vuelva a crear uno nuevo.</span>
+              </v-tooltip>
+            </template>
+          </v-text-field>
 
           <v-text-field
             v-model="paciente.Nombres"
@@ -151,7 +166,7 @@ export default {
         TRIG: ''
       },
       mensaje: '',
-      mensajeSuccess: true
+      mensajeSuccess: true,
     };
   },
   created() {
